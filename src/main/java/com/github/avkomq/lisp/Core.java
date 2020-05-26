@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Core {
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         String input = "(begin (define r 10) (* pi (* r r)))";
         String[] tokens = tokenize(input);
         System.out.println(Arrays.toString(tokens));
@@ -51,5 +51,6 @@ public class Core {
             }
 
         }
+        return null;
     }
 }
