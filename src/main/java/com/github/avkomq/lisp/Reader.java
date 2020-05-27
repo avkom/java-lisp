@@ -6,7 +6,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Reader {
-    private final static String REGEXP = "\\(|\\)|[-+]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?";
+    private final static String REGEXP = "\\(|" + // (
+            "\\)|" + // )
+            "[-+]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?|\\+Inf|-Inf|NaN|" + // number
+            "\\\"([^\\\\\\\"]|\\\\.)*\\\"|" + // string
+            "false|true|" + // boolean
+            "null"; // null
     private final static Pattern pattern = Pattern.compile(REGEXP);
 
     public Object parse(String input) {
