@@ -30,4 +30,27 @@ public class ReaderTest extends TestCase {
         assertEquals("nil", tokens.get(10));
         assertEquals(")", tokens.get(11));
     }
+
+    public void testReadFromTokens() {
+        // Arrange
+        Reader reader = new Reader();
+        ArrayList<String> tokens = new ArrayList<>();
+        tokens.add("(");
+        tokens.add("1");
+        tokens.add("(");
+        tokens.add("2");
+        tokens.add("3");
+        tokens.add(")");
+        tokens.add("4");
+        tokens.add(")");
+        Enumerator<String> enumerator = new Enumerator<>(tokens);
+        enumerator.moveNext();
+
+        // Act
+        Object ast = reader.readFromTokens(enumerator);
+
+        // Assert
+        ArrayList<String> list = (ArrayList<String>) ast;
+        System.out.println(Arrays.toString(list.toArray()));
+    }
 }

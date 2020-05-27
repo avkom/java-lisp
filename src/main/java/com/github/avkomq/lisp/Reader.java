@@ -1,7 +1,6 @@
 package com.github.avkomq.lisp;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +16,9 @@ public class Reader {
 
     public Object parse(String input) {
         ArrayList<String> tokens = getTokens(input);
-        return readFromTokens(tokens.iterator());
+        Enumerator<String> enumerator = new Enumerator(tokens);
+        enumerator.moveNext();
+        return readFromTokens(enumerator);
     }
 
     ArrayList<String> getTokens(String input) {
@@ -29,32 +30,29 @@ public class Reader {
         return tokens;
     }
 
-    private Object readFromTokens(Iterator<String> iterator) {
-        while (iterator.hasNext()) {
-            String token = iterator.next();
-            if ("(".equals(token)) {
-                ArrayList list = new ArrayList();
-                if (iterator.hasNext()) {
-                    token = iterator.next();
-                    while (iterator.hasNext() && !")".equals(token)) {
-                        list.add(readFromTokens(iterator));
-                    }
-                }
-                return list;
+    Object readFromTokens(Enumerator<String> enumerator) {
+        String token = enumerator.getCurrent();
+
+        if ("(".equals(token)) {
+            ArrayList list = new ArrayList();
+            while (enumerator.moveNext() && !")".equals(enumerator.getCurrent())) {
+                list.add(readFromTokens(enumerator));
             }
-            if (")".equals(token)) {
-                throw new RuntimeException("Unexpected )");
-            }
+            return list;
+        }
+
+        if (")".equals(token)) {
+            throw new RuntimeException("Unexpected )");
+        }
+
+        try {
+            return Integer.parseInt(token);
+        } catch (Exception intException) {
             try {
-                return Integer.parseInt(token);
-            } catch (Exception intException) {
-                try {
-                    return Double.parseDouble(token);
-                } catch (Exception doubleException) {
-                    return token;
-                }
+                return Double.parseDouble(token);
+            } catch (Exception doubleException) {
+                return token;
             }
         }
-        return null;
     }
 }
