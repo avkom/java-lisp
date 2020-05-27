@@ -10,8 +10,9 @@ public class Reader {
             "\\)|" + // )
             "[-+]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?|\\+Inf|-Inf|NaN|" + // number
             "\\\"([^\\\\\\\"]|\\\\.)*\\\"|" + // string
-            "false|true|" + // boolean
-            "null"; // null
+            "[^\\\"\\(\\)\\s]+|" + // symbol
+            "#t|#f|" + // boolean
+            "nil"; // nil
     private final static Pattern pattern = Pattern.compile(REGEXP);
 
     public Object parse(String input) {
