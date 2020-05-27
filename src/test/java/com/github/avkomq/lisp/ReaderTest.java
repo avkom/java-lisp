@@ -9,7 +9,7 @@ public class ReaderTest extends TestCase {
     public void testGetTokens() {
         // Arrange
         Reader reader = new Reader();
-        String input = "(-1.1e2 2 +Inf -Inf NaN \"Hello, \\World!\n\" true false null)";
+        String input = "(-1.1e2 2 +Inf -Inf NaN \"Hello, \\World!\" true false null)";
 
         // Act
         ArrayList<String> tokens = reader.getTokens(input);
@@ -23,7 +23,7 @@ public class ReaderTest extends TestCase {
         assertEquals("+Inf", tokens.get(3));
         assertEquals("-Inf", tokens.get(4));
         assertEquals("NaN", tokens.get(5));
-        assertEquals("\"Hello, \\World!\n\"", tokens.get(6));
+        assertEquals("\"Hello, \\World!\"", tokens.get(6));
         assertEquals("true", tokens.get(7));
         assertEquals("false", tokens.get(8));
         assertEquals("null", tokens.get(9));
