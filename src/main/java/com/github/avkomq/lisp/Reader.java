@@ -45,6 +45,10 @@ public class Reader {
             throw new RuntimeException("Unexpected )");
         }
 
+        if (token.startsWith("\"")) {
+            return token.substring(1, token.length() - 1);
+        }
+
         try {
             return Integer.parseInt(token);
         } catch (Exception intException) {

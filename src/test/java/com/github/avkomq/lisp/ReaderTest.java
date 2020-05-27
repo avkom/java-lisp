@@ -41,7 +41,7 @@ public class ReaderTest extends TestCase {
         tokens.add("2");
         tokens.add("3");
         tokens.add(")");
-        tokens.add("4");
+        tokens.add("\"Hello\"");
         tokens.add(")");
         Enumerator<String> enumerator = new Enumerator<>(tokens);
         enumerator.moveNext();
