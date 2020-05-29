@@ -2,11 +2,7 @@ package com.github.avkomq.lisp;
 
 import java.util.Scanner;
 
-/**
- * Hello world!
- *
- */
-public class App 
+public class App
 {
     public static void main(String[] args)
     {
@@ -36,6 +32,10 @@ public class App
     }
 
     private static void initializeGlobalEnvironment(Environment environment) {
-        environment.set(new Symbol("+"), (Lambda) args -> (Double)args[0] + (Double)args[1]);
+        setEnvironmentLambda(environment,"+", args -> (Double)args[0] + (Double)args[1]);
+    }
+
+    private static void setEnvironmentLambda(Environment environment, String symbol, Lambda lambda) {
+        environment.set(new Symbol(symbol), lambda);
     }
 }
