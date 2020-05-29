@@ -8,12 +8,14 @@ import java.util.Scanner;
  */
 public class App 
 {
-    public static void main( String[] args )
+    public static void main(String[] args)
     {
         Scanner scanner = new Scanner(System.in);
         Reader reader = new Reader();
         Evaluator evaluator = new Evaluator();
         Printer printer = new Printer();
+        Environment globalEnvironment = new Environment();
+        initializeGlobalEnvironment(globalEnvironment);
 
         System.out.println("Lisp Interpretator");
 
@@ -23,7 +25,7 @@ public class App
             try {
                 String input = scanner.nextLine();
                 Object ast = reader.parse(input);
-                Object result = evaluator.evaluate(ast);
+                Object result = evaluator.evaluate(ast, globalEnvironment);
                 String output = printer.print(result);
                 System.out.println(output);
             }
@@ -31,5 +33,9 @@ public class App
                 exception.printStackTrace(System.out);
             }
         }
+    }
+
+    private static void initializeGlobalEnvironment(Environment environment) {
+        environment.set(new Symbol("+"), (Lambda) args -> (Double)args[0] + (Double)args[1]);
     }
 }
