@@ -1,7 +1,7 @@
 package com.github.avkomq.lisp;
 
 public class Evaluator {
-    public Object Evaluate(Object ast) {
+    public Object evaluate(Object ast) {
         return ast;
     }
 }
