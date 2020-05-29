@@ -34,20 +34,10 @@ public class ReaderTest extends TestCase {
     public void testGetAst() {
         // Arrange
         Reader reader = new Reader();
-        ArrayList<String> tokens = new ArrayList<>();
-        tokens.add("(");
-        tokens.add("-1.1e2");
-        tokens.add("2");
-        tokens.add("Inf");
-        tokens.add("-Inf");
-        tokens.add("NaN");
-        tokens.add("\"Hello, \\World!\"");
-        tokens.add("-a.b?");
-        tokens.add("#t");
-        tokens.add("#f");
-        tokens.add("nil");
-        tokens.add(")");
-        Enumerator<String> enumerator = new Enumerator<>(tokens);
+        String[] tokens = new String[] {
+                "(", "-1.1e2", "2", "Inf", "-Inf", "NaN", "\"Hello, \\World!\"", "-a.b?", "#t", "#f", "nil", ")"
+        };
+        Enumerator<String> enumerator = new Enumerator<>(Arrays.asList(tokens));
         enumerator.moveNext();
 
         // Act
@@ -73,16 +63,10 @@ public class ReaderTest extends TestCase {
     public void testGetAstNested() {
         // Arrange
         Reader reader = new Reader();
-        ArrayList<String> tokens = new ArrayList<>();
-        tokens.add("(");
-        tokens.add("1");
-        tokens.add("(");
-        tokens.add("2");
-        tokens.add("3");
-        tokens.add(")");
-        tokens.add("\"Hello\"");
-        tokens.add(")");
-        Enumerator<String> enumerator = new Enumerator<>(tokens);
+        String[] tokens = new String[] {
+                "(", "1", "(", "2", "3", ")", "\"Hello\"", ")"
+        };
+        Enumerator<String> enumerator = new Enumerator<>(Arrays.asList(tokens));
         enumerator.moveNext();
 
         // Act
