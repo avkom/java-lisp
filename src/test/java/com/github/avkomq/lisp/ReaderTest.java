@@ -31,7 +31,46 @@ public class ReaderTest extends TestCase {
         assertEquals(")", tokens.get(11));
     }
 
-    public void testReadFromTokens() {
+    public void testGetAst() {
+        // Arrange
+        Reader reader = new Reader();
+        ArrayList<String> tokens = new ArrayList<>();
+        tokens.add("(");
+        tokens.add("-1.1e2");
+        tokens.add("2");
+        tokens.add("Inf");
+        tokens.add("-Inf");
+        tokens.add("NaN");
+        tokens.add("\"Hello, \\World!\"");
+        tokens.add("-a.b?");
+        tokens.add("#t");
+        tokens.add("#f");
+        tokens.add("nil");
+        tokens.add(")");
+        Enumerator<String> enumerator = new Enumerator<>(tokens);
+        enumerator.moveNext();
+
+        // Act
+        Object ast = reader.getAst(enumerator);
+
+        // Assert
+        ArrayList<Object> list = (ArrayList<Object>) ast;
+        System.out.println(Arrays.toString(list.toArray()));
+
+        assertEquals(10, list.size());
+        assertEquals(-1.1e2, (double) list.get(0));
+        assertEquals(2, (int) list.get(1));
+        assertEquals(Double.POSITIVE_INFINITY, (double) list.get(2));
+        assertEquals(Double.NEGATIVE_INFINITY, (double) list.get(3));
+        assertEquals(Double.NaN, (double) list.get(4));
+        assertEquals("Hello, \\World!", (String) list.get(5));
+        assertEquals(new Symbol("-a.b?"), (Symbol) list.get(6));
+        assertEquals(true, (boolean) list.get(7));
+        assertEquals(false, (boolean) list.get(8));
+        assertNull(list.get(9));
+    }
+
+    public void testGetAstNested() {
         // Arrange
         Reader reader = new Reader();
         ArrayList<String> tokens = new ArrayList<>();
@@ -47,10 +86,19 @@ public class ReaderTest extends TestCase {
         enumerator.moveNext();
 
         // Act
-        Object ast = reader.readFromTokens(enumerator);
+        Object ast = reader.getAst(enumerator);
 
         // Assert
-        ArrayList<String> list = (ArrayList<String>) ast;
+        ArrayList<Object> list = (ArrayList<Object>) ast;
         System.out.println(Arrays.toString(list.toArray()));
+
+        assertEquals(3, list.size());
+        assertEquals(1, (int) list.get(0));
+        assertEquals("Hello", (String) list.get(2));
+
+        ArrayList<Object> nestedList = (ArrayList<Object>) list.get(1);
+        assertEquals(2, nestedList.size());
+        assertEquals(2, (int) nestedList.get(0));
+        assertEquals(3, (int) nestedList.get(1));
     }
 }

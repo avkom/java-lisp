@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public class Reader {
     private final static String REGEXP = "\\(|" + // (
             "\\)|" + // )
-            "[-+]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?|\\+Inf|-Inf|NaN|" + // number
+            "[-+]?[0-9]+[.]?[0-9]*([eE][-+]?[0-9]+)?|Inf|-Inf|NaN|" + // number
             "\\\"([^\\\\\\\"]|\\\\.)*\\\"|" + // string
             "[^\\\"\\(\\)\\s]+|" + // symbol
             "#t|#f|" + // boolean
@@ -18,7 +18,7 @@ public class Reader {
         ArrayList<String> tokens = getTokens(input);
         Enumerator<String> enumerator = new Enumerator(tokens);
         enumerator.moveNext();
-        return readFromTokens(enumerator);
+        return getAst(enumerator);
     }
 
     ArrayList<String> getTokens(String input) {
@@ -30,13 +30,13 @@ public class Reader {
         return tokens;
     }
 
-    Object readFromTokens(Enumerator<String> enumerator) {
+    Object getAst(Enumerator<String> enumerator) {
         String token = enumerator.getCurrent();
 
         if ("(".equals(token)) {
             ArrayList list = new ArrayList();
             while (enumerator.moveNext() && !")".equals(enumerator.getCurrent())) {
-                list.add(readFromTokens(enumerator));
+                list.add(getAst(enumerator));
             }
             return list;
         }
@@ -45,8 +45,28 @@ public class Reader {
             throw new RuntimeException("Unexpected )");
         }
 
+        if ("#t".equals(token)) {
+            return true;
+        }
+
+        if ("#f".equals(token)) {
+            return false;
+        }
+
+        if ("nil".equals(token)) {
+            return null;
+        }
+
         if (token.startsWith("\"")) {
             return token.substring(1, token.length() - 1);
+        }
+
+        if ("Inf".equals(token)) {
+            return Double.POSITIVE_INFINITY;
+        }
+
+        if ("-Inf".equals(token)) {
+            return Double.NEGATIVE_INFINITY;
         }
 
         try {
@@ -55,7 +75,7 @@ public class Reader {
             try {
                 return Double.parseDouble(token);
             } catch (Exception doubleException) {
-                return token;
+                return new Symbol(token);
             }
         }
     }
