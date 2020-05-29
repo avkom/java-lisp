@@ -3,6 +3,8 @@ package com.github.avkomq.lisp;
 import java.util.ArrayList;
 
 public class Evaluator {
+    private final static Symbol DEFINE = new Symbol("define");
+
     public Object evaluate(Object ast, Environment environment) {
         if (ast instanceof String ||
             ast instanceof Number ||
@@ -19,7 +21,7 @@ public class Evaluator {
             ArrayList<Object> list = (ArrayList) ast;
             Object head = list.get(0);
 
-            if ("define".equals(head)) {
+            if (DEFINE.equals(head)) {
                 Symbol symbol = (Symbol) list.get(1);
                 Object value = evaluate(list.get(2), environment);
                 environment.set(symbol, value);
