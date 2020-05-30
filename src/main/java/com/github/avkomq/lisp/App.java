@@ -10,8 +10,7 @@ public class App
         Reader reader = new Reader();
         Evaluator evaluator = new Evaluator();
         Printer printer = new Printer();
-        Environment globalEnvironment = new Environment();
-        initializeGlobalEnvironment(globalEnvironment);
+        Environment globalEnvironment = new GlobalEnvironment();
 
         System.out.println("Lisp Interpreter");
 
@@ -29,13 +28,5 @@ public class App
                 exception.printStackTrace(System.out);
             }
         }
-    }
-
-    private static void initializeGlobalEnvironment(Environment environment) {
-        setEnvironmentLambda(environment,"+", args -> (Double)args[0] + (Double)args[1]);
-    }
-
-    private static void setEnvironmentLambda(Environment environment, String symbol, Lambda lambda) {
-        environment.set(new Symbol(symbol), lambda);
     }
 }
