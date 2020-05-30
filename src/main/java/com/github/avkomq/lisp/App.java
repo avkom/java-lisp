@@ -13,7 +13,7 @@ public class App
         Environment globalEnvironment = new Environment();
         initializeGlobalEnvironment(globalEnvironment);
 
-        System.out.println("Lisp Interpretator");
+        System.out.println("Lisp Interpreter");
 
         while (true) {
             System.out.print("> ");
