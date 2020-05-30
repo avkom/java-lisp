@@ -70,8 +70,8 @@ public class Reader {
         }
 
         try {
-            return Integer.parseInt(token);
-        } catch (Exception intException) {
+            return Long.parseLong(token);
+        } catch (Exception longException) {
             try {
                 return Double.parseDouble(token);
             } catch (Exception doubleException) {
