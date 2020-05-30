@@ -4,10 +4,15 @@ import java.util.HashMap;
 
 public class Environment {
     private Environment outer;
+
     private HashMap<Symbol, Object> map = new HashMap<>();
 
     public Environment(Environment outer) {
         this.outer = outer;
+    }
+
+    public HashMap<Symbol, Object> getMap() {
+        return map;
     }
 
     public Object get(Symbol symbol) {

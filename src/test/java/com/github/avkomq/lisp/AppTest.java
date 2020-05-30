@@ -20,4 +20,8 @@ public class AppTest extends TestCase {
     public void testPlusDouble() {
         assertReadEvaluatePrint("(+ 1.0 2.0)", "3.0");
     }
+
+    public void testLambda() {
+        assertReadEvaluatePrint("((lambda (a b) (+ a b)) 1.0 2.0)", "3.0");
+    }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Evaluator {
     private final static Symbol DEFINE = new Symbol("define");
+    private final static Symbol LAMBDA = new Symbol("lambda");
 
     public Object evaluate(Object ast, Environment environment) {
         if (ast instanceof String ||
@@ -18,7 +19,7 @@ public class Evaluator {
         }
 
         if (ast instanceof ArrayList) {
-            ArrayList<Object> list = (ArrayList) ast;
+            ArrayList<Object> list = (ArrayList<Object>) ast;
             Object head = list.get(0);
 
             if (DEFINE.equals(head)) {
@@ -28,8 +29,13 @@ public class Evaluator {
                 return value;
             }
 
+            if (LAMBDA.equals(head)) {
+                return new Closure((ArrayList<Symbol>) list.get(1), list.get(2), environment, this);
+            }
+
+            // Function call
             Lambda lambda = (Lambda) evaluate(head, environment);
-            ArrayList<Object> args = new ArrayList<>();
+            ArrayList<Object> args = new ArrayList<>(list.size() - 1);
             for (int i = 1; i < list.size(); i++) {
                 args.add(evaluate(list.get(i), environment));
             }

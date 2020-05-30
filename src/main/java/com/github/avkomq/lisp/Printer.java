@@ -1,5 +1,6 @@
 package com.github.avkomq.lisp;
 
+import java.util.Collections;
 import java.util.Iterator;
 
 public class Printer {
@@ -33,13 +34,23 @@ public class Printer {
         else if (ast instanceof Iterable) {
             printIterable((Iterable<Object>) ast, builder);
         }
+        else if (ast instanceof Closure) {
+            Closure closure = (Closure) ast;
+            builder.append("(lambda ");
+            printIterable(closure.getParameters(), builder);
+            builder.append(" ");
+            print(closure.getBody());
+            builder.append(" ");
+            print(closure.getEnvironment().getMap());
+            builder.append(")");
+        }
         else {
             builder.append(ast.toString());
         }
     }
 
-    private void printIterable(Iterable<Object> iterable, StringBuilder builder) {
-        Iterator<Object> iterator = iterable.iterator();
+    private void printIterable(Iterable iterable, StringBuilder builder) {
+        Iterator iterator = iterable.iterator();
         builder.append("(");
 
         while (iterator.hasNext()) {
