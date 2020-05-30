@@ -3,16 +3,11 @@ package com.github.avkomq.lisp;
 import java.util.ArrayList;
 
 public class Evaluator {
+    private final static Symbol BEGIN = new Symbol("begin");
     private final static Symbol DEFINE = new Symbol("define");
     private final static Symbol LAMBDA = new Symbol("lambda");
 
     public Object evaluate(Object ast, Environment environment) {
-        if (ast instanceof String ||
-            ast instanceof Number ||
-            ast instanceof Boolean ||
-            ast == null) {
-            return ast;
-        }
 
         if (ast instanceof Symbol) {
             return environment.get((Symbol) ast);
@@ -21,6 +16,16 @@ public class Evaluator {
         if (ast instanceof ArrayList) {
             ArrayList<Object> list = (ArrayList<Object>) ast;
             Object head = list.get(0);
+
+            if (BEGIN.equals(head)) {
+                Object value = null;
+
+                for (int i = 1; i < list.size(); i++) {
+                    value = evaluate(list.get(i), environment);
+                }
+
+                return value;
+            }
 
             if (DEFINE.equals(head)) {
                 Symbol symbol = (Symbol) list.get(1);
@@ -42,6 +47,6 @@ public class Evaluator {
             return lambda.invoke(args.toArray());
         }
 
-        return null;
+        return ast;
     }
 }
