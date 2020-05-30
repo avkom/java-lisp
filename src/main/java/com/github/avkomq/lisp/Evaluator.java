@@ -33,7 +33,7 @@ public class Evaluator {
             for (int i = 1; i < list.size(); i++) {
                 args.add(evaluate(list.get(i), environment));
             }
-            return lambda.Invoke(args.toArray());
+            return lambda.invoke(args.toArray());
         }
 
         return null;
