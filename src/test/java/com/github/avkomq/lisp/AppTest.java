@@ -42,9 +42,30 @@ public class AppTest extends TestCase {
         assertReadEvaluatePrint("(+ 1.0 2.0)", "3.0");
     }
 
+    public void testCallLambdaVariadicWithoutRestA() {
+        assertReadEvaluatePrint("((lambda (a . b) a) 1)", "1");
+    }
+
+    public void testCallLambdaVariadicWithoutRestB() {
+        assertReadEvaluatePrint("((lambda (a . b) b) 1)", "()");
+    }
+
+    public void testCallLambdaVariadicWithRestA() {
+        assertReadEvaluatePrint("((lambda (a . b) a) 1 2 3)", "1");
+    }
+
+    public void testCallLambdaVariadicWithRestB() {
+        assertReadEvaluatePrint("((lambda (a . b) b) 1 2 3)", "(2 3)");
+    }
+
     public void testCallWhenValueIsNotFunction() {
         assertReadEvaluatePrintThrows("(123)", SyntaxErrorException.class,
                 "The value is not a function");
+    }
+
+    public void testCallLambdaWithFewArguments() {
+        assertReadEvaluatePrintThrows("((lambda (a b) (+ a b)) 1)", SyntaxErrorException.class,
+                "Few arguments passed to the function call");
     }
 
     public void testDefine() {
