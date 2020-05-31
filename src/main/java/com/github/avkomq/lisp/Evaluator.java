@@ -17,6 +17,11 @@ public class Evaluator {
 
         if (ast instanceof ArrayList) {
             ArrayList<Object> list = (ArrayList<Object>) ast;
+
+            if (list.size() == 0) {
+                return null;
+            }
+
             Object head = list.get(0);
 
             if (BEGIN.equals(head)) {
