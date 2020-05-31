@@ -7,6 +7,7 @@ public class Evaluator {
     private final static Symbol DEFINE = new Symbol("define");
     private final static Symbol IF = new Symbol("if");
     private final static Symbol LAMBDA = new Symbol("lambda");
+    private final static Symbol QUOTE = new Symbol("quote");
 
     public Object evaluate(Object ast, Environment environment) {
 
@@ -52,6 +53,10 @@ public class Evaluator {
 
             if (LAMBDA.equals(head)) {
                 return new Closure((ArrayList<Symbol>) list.get(1), list.get(2), environment, this);
+            }
+
+            if (QUOTE.equals(head)) {
+                return list.get(1);
             }
 
             // Function call

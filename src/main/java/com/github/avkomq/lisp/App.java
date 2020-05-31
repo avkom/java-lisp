@@ -10,7 +10,7 @@ public class App
         Reader reader = new Reader();
         Evaluator evaluator = new Evaluator();
         Printer printer = new Printer();
-        Environment globalEnvironment = new GlobalEnvironment();
+        Environment environment = new GlobalEnvironment();
 
         System.out.println("Lisp Interpreter");
 
@@ -20,7 +20,7 @@ public class App
             try {
                 String input = scanner.nextLine();
                 Object ast = reader.parse(input);
-                Object result = evaluator.evaluate(ast, globalEnvironment);
+                Object result = evaluator.evaluate(ast, environment);
                 String output = printer.print(result);
                 System.out.println(output);
             }

@@ -8,10 +8,10 @@ public class AppTest extends TestCase {
         Reader reader = new Reader();
         Evaluator evaluator = new Evaluator();
         Printer printer = new Printer();
-        Environment globalEnvironment = new GlobalEnvironment();
+        Environment environment = new GlobalEnvironment();
 
         Object ast = reader.parse(input);
-        Object result = evaluator.evaluate(ast, globalEnvironment);
+        Object result = evaluator.evaluate(ast, environment);
         String output = printer.print(result);
 
         assertEquals(expectedOutput, output);
@@ -47,5 +47,9 @@ public class AppTest extends TestCase {
 
     public void testLambda() {
         assertReadEvaluatePrint("((lambda (a b) (+ a b)) 1.0 2.0)", "3.0");
+    }
+
+    public void testQuote() {
+        assertReadEvaluatePrint("(quote (a 1))", "(a 1)");
     }
 }
