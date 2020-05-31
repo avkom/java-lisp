@@ -68,6 +68,11 @@ public class AppTest extends TestCase {
                 "Few arguments passed to the function call");
     }
 
+    public void testCallLambdaVariadicWithFewArguments() {
+        assertReadEvaluatePrintThrows("((lambda (a  b . c) a) 1)", SyntaxErrorException.class,
+                "Few arguments passed to the function call");
+    }
+
     public void testDefine() {
         assertReadEvaluatePrint("(begin (define a 1) a)", "1");
     }
