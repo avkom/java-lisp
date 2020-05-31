@@ -28,7 +28,6 @@ public class AppTest extends TestCase {
 
             Object ast = reader.parse(input);
             Object result = evaluator.evaluate(ast, environment);
-            String output = printer.print(result);
         });
 
         assertEquals(expectedMessage, exception.getMessage());
@@ -117,5 +116,10 @@ public class AppTest extends TestCase {
 
     public void testQuote() {
         assertReadEvaluatePrint("(quote (a 1))", "(a 1)");
+    }
+
+    public void testQuoteWhenArgumentMissing() {
+        assertReadEvaluatePrintThrows("(quote)", SyntaxErrorException.class,
+                "The argument of 'quote' special form is missing");
     }
 }

@@ -100,6 +100,10 @@ public class Evaluator {
             }
 
             if (QUOTE.equals(head)) {
+                if (list.size() < 2) {
+                    throw new SyntaxErrorException("The argument of 'quote' special form is missing");
+                }
+
                 return list.get(1);
             }
 
