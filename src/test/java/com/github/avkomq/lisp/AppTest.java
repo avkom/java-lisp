@@ -128,4 +128,8 @@ public class AppTest extends TestCase {
         assertReadEvaluatePrintThrows("(quote)", SyntaxErrorException.class,
                 "The argument of 'quote' special form is missing");
     }
+
+    public void testPrintLambda() {
+        assertReadEvaluatePrint("((lambda (x y) (lambda (a b) (+ a b))) 1 2)", "(lambda (a b) (+ a b) (x y))");
+    }
 }

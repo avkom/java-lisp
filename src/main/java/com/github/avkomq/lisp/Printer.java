@@ -1,15 +1,16 @@
 package com.github.avkomq.lisp;
 
 import java.util.Iterator;
+import java.util.Map;
 
 public class Printer {
     public String print(Object ast) {
         StringBuilder builder = new StringBuilder();
-        print(ast, builder);
+        printValue(ast, builder);
         return builder.toString();
     }
 
-    private void print(Object ast, StringBuilder builder) {
+    private void printValue(Object ast, StringBuilder builder) {
         if (ast == null) {
             builder.append("nil");
         }
@@ -33,14 +34,17 @@ public class Printer {
         else if (ast instanceof Iterable) {
             printIterable((Iterable<Object>) ast, builder);
         }
+        else if (ast instanceof Map) {
+            printMap((Map) ast, builder);
+        }
         else if (ast instanceof Closure) {
             Closure closure = (Closure) ast;
             builder.append("(lambda ");
             printIterable(closure.getParameters(), builder);
             builder.append(" ");
-            print(closure.getBody());
+            printValue(closure.getBody(), builder);
             builder.append(" ");
-            print(closure.getEnvironment().getMap());
+            printIterable(closure.getEnvironment().getMap().keySet(), builder);
             builder.append(")");
         }
         else {
@@ -53,13 +57,26 @@ public class Printer {
         builder.append("(");
 
         while (iterator.hasNext()) {
-            print(iterator.next(), builder);
+            printValue(iterator.next(), builder);
 
             if (iterator.hasNext()) {
                 builder.append(" ");
             }
         }
 
+        builder.append(")");
+    }
+
+    private void printMap(Map map, StringBuilder builder) {
+        builder.append("(");
+        map.forEach((key, value) -> {
+            builder.append(":");
+            builder.append(key);
+            builder.append(" ");
+            builder.append(value);
+            builder.append(" ");
+        });
+        builder.deleteCharAt(builder.length() - 1);
         builder.append(")");
     }
 }
