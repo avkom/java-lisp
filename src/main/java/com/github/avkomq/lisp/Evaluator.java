@@ -36,15 +36,15 @@ public class Evaluator {
 
             if (DEFINE.equals(head)) {
                 if (list.size() < 2) {
-                    throw new SyntaxErrorException("Symbol argument missing in 'define' special form");
+                    throw new SyntaxErrorException("The first (Symbol) argument is missing in 'define' special form");
                 }
 
                 if (!(list.get(1) instanceof Symbol)) {
-                    throw new SyntaxErrorException("The second argument of 'define' special form is not a Symbol");
+                    throw new SyntaxErrorException("The first argument of 'define' special form is not a Symbol");
                 }
 
                 if (list.size() < 3) {
-                    throw new SyntaxErrorException("Value argument missing in 'define' special form");
+                    throw new SyntaxErrorException("The second (value) argument missing in 'define' special form");
                 }
 
                 Symbol symbol = (Symbol) list.get(1);
@@ -54,6 +54,14 @@ public class Evaluator {
             }
 
             if (IF.equals(head)) {
+                if (list.size() < 2) {
+                    throw new SyntaxErrorException("The first (condition) argument is missing in 'if' special form");
+                }
+
+                if (list.size() < 3) {
+                    throw new SyntaxErrorException("The second (true path) argument is missing in 'if' special form");
+                }
+
                 Object condition = evaluate(list.get(1), environment);
                 if (condition == Boolean.TRUE) {
                     return evaluate(list.get(2), environment);

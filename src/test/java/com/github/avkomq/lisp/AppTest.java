@@ -48,17 +48,17 @@ public class AppTest extends TestCase {
 
     public void testDefineWhenSymbolArgumentMissing() {
         assertReadEvaluatePrintThrows("(define)", SyntaxErrorException.class,
-                "Symbol argument missing in 'define' special form");
+                "The first (Symbol) argument is missing in 'define' special form");
     }
 
-    public void testDefineWhenSecondArgumentIsNotSymbol() {
+    public void testDefineWhenFirstArgumentIsNotSymbol() {
         assertReadEvaluatePrintThrows("(define 1)", SyntaxErrorException.class,
-                "The second argument of 'define' special form is not a Symbol");
+                "The first argument of 'define' special form is not a Symbol");
     }
 
     public void testDefineWhenValueArgumentMissing() {
         assertReadEvaluatePrintThrows("(define a)", SyntaxErrorException.class,
-                "Value argument missing in 'define' special form");
+                "The second (value) argument missing in 'define' special form");
     }
 
     public void testEmptyList() {
@@ -79,6 +79,16 @@ public class AppTest extends TestCase {
 
     public void testIfWhenTrue() {
         assertReadEvaluatePrint("(if #t 1)", "1");
+    }
+
+    public void testIfWhenConditionArgumentMissing() {
+        assertReadEvaluatePrintThrows("(if)", SyntaxErrorException.class,
+                "The first (condition) argument is missing in 'if' special form");
+    }
+
+    public void testIfWhenSecondArgumentMissing() {
+        assertReadEvaluatePrintThrows("(if true)", SyntaxErrorException.class,
+                "The second (true path) argument is missing in 'if' special form");
     }
 
     public void testLambda() {
