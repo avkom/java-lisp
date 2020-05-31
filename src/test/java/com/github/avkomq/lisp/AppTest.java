@@ -28,6 +28,7 @@ public class AppTest extends TestCase {
 
             Object ast = reader.parse(input);
             Object result = evaluator.evaluate(ast, environment);
+            printer.print(result);
         });
 
         assertEquals(expectedMessage, exception.getMessage());
@@ -39,6 +40,11 @@ public class AppTest extends TestCase {
 
     public void testCallPlus() {
         assertReadEvaluatePrint("(+ 1.0 2.0)", "3.0");
+    }
+
+    public void testCallWhenValueIsNotFunction() {
+        assertReadEvaluatePrintThrows("(123)", SyntaxErrorException.class,
+                "The value is not a function");
     }
 
     public void testDefine() {

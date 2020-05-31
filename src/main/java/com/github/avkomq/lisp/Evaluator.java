@@ -108,11 +108,17 @@ public class Evaluator {
             }
 
             // Function call
-            Lambda lambda = (Lambda) evaluate(head, environment);
+            Object function = evaluate(head, environment);
+            if (!(function instanceof Lambda)) {
+                throw new SyntaxErrorException("The value is not a function");
+            }
+            Lambda lambda = (Lambda) function;
+
             ArrayList<Object> args = new ArrayList<>(list.size() - 1);
             for (int i = 1; i < list.size(); i++) {
                 args.add(evaluate(list.get(i), environment));
             }
+            
             return lambda.invoke(args.toArray());
         }
 
