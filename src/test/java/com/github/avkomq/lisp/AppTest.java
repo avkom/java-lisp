@@ -28,4 +28,20 @@ public class AppTest extends TestCase {
     public void testBegin() {
         assertReadEvaluatePrint("(begin (define a 1.0) (+ a 2.0))", "3.0");
     }
+
+    public void testIfElseWhenTrue() {
+        assertReadEvaluatePrint("(if #t 1 2)", "1");
+    }
+
+    public void testIfElseWhenFalse() {
+        assertReadEvaluatePrint("(if #f 1 2)", "2");
+    }
+
+    public void testIfWhenTrue() {
+        assertReadEvaluatePrint("(if #t 1)", "1");
+    }
+
+    public void testIfWhenFalse() {
+        assertReadEvaluatePrint("(if #f 1)", "#f");
+    }
 }

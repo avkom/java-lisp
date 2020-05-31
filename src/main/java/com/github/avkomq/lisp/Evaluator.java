@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Evaluator {
     private final static Symbol BEGIN = new Symbol("begin");
     private final static Symbol DEFINE = new Symbol("define");
+    private final static Symbol IF = new Symbol("if");
     private final static Symbol LAMBDA = new Symbol("lambda");
 
     public Object evaluate(Object ast, Environment environment) {
@@ -32,6 +33,21 @@ public class Evaluator {
                 Object value = evaluate(list.get(2), environment);
                 environment.set(symbol, value);
                 return value;
+            }
+
+            if (IF.equals(head)) {
+                Object condition = evaluate(list.get(1), environment);
+                if (condition == Boolean.TRUE) {
+                    return evaluate(list.get(2), environment);
+                }
+                else {
+                    if (list.size() == 4) {
+                        return evaluate(list.get(3), environment);
+                    }
+                    else {
+                        return condition;
+                    }
+                }
             }
 
             if (LAMBDA.equals(head)) {
