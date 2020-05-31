@@ -21,6 +21,10 @@ public class AppTest extends TestCase {
         assertReadEvaluatePrint("(begin (define a 1.0) (+ a 2.0))", "3.0");
     }
 
+    public void testDefine() {
+        assertReadEvaluatePrint("(begin (define a 1) a)", "1");
+    }
+
     public void testCallPlus() {
         assertReadEvaluatePrint("(+ 1.0 2.0)", "3.0");
     }
