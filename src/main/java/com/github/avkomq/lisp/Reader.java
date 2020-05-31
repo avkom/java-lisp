@@ -16,7 +16,7 @@ public class Reader {
 
     public Object parse(String input) {
         ArrayList<String> tokens = getTokens(input);
-        Enumerator<String> enumerator = new Enumerator(tokens);
+        Enumerator<String> enumerator = new Enumerator<>(tokens);
         enumerator.moveNext();
         return getAst(enumerator);
     }
@@ -34,7 +34,7 @@ public class Reader {
         String token = enumerator.getCurrent();
 
         if ("(".equals(token)) {
-            ArrayList list = new ArrayList();
+            ArrayList<Object> list = new ArrayList<>();
             while (enumerator.moveNext() && !")".equals(enumerator.getCurrent())) {
                 list.add(getAst(enumerator));
             }

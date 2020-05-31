@@ -1,6 +1,5 @@
 package com.github.avkomq.lisp;
 
-import java.util.Collections;
 import java.util.Iterator;
 
 public class Printer {
