@@ -38,11 +38,16 @@ public class Reader {
             while (enumerator.moveNext() && !")".equals(enumerator.getCurrent())) {
                 list.add(getAst(enumerator));
             }
+
+            if (!")".equals(enumerator.getCurrent())) {
+                throw new SyntaxErrorException(") expected");
+            }
+
             return list;
         }
 
         if (")".equals(token)) {
-            throw new RuntimeException("Unexpected )");
+            throw new SyntaxErrorException("Unexpected )");
         }
 
         if ("#t".equals(token)) {
