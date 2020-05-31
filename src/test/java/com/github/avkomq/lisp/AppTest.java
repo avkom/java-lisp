@@ -2,6 +2,8 @@ package com.github.avkomq.lisp;
 
 import junit.framework.TestCase;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class AppTest extends TestCase {
 
     private void assertReadEvaluatePrint(String input, String expectedOutput) {
@@ -17,6 +19,21 @@ public class AppTest extends TestCase {
         assertEquals(expectedOutput, output);
     }
 
+    private <T extends Exception> void assertReadEvaluatePrintThrows(String input, Class<T> expectedType, String expectedMessage) {
+        Exception exception = assertThrows(expectedType, () -> {
+            Reader reader = new Reader();
+            Evaluator evaluator = new Evaluator();
+            Printer printer = new Printer();
+            Environment environment = new GlobalEnvironment();
+
+            Object ast = reader.parse(input);
+            Object result = evaluator.evaluate(ast, environment);
+            String output = printer.print(result);
+        });
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
     public void testBegin() {
         assertReadEvaluatePrint("(begin (define a 1.0) (+ a 2.0))", "3.0");
     }
@@ -27,6 +44,21 @@ public class AppTest extends TestCase {
 
     public void testDefine() {
         assertReadEvaluatePrint("(begin (define a 1) a)", "1");
+    }
+
+    public void testDefineWhenSymbolArgumentMissing() {
+        assertReadEvaluatePrintThrows("(define)", SyntaxErrorException.class,
+                "Symbol argument missing in 'define' special form");
+    }
+
+    public void testDefineWhenSecondArgumentIsNotSymbol() {
+        assertReadEvaluatePrintThrows("(define 1)", SyntaxErrorException.class,
+                "The second argument of 'define' special form is not a Symbol");
+    }
+
+    public void testDefineWhenValueArgumentMissing() {
+        assertReadEvaluatePrintThrows("(define a)", SyntaxErrorException.class,
+                "Value argument missing in 'define' special form");
     }
 
     public void testEmptyList() {
