@@ -77,7 +77,26 @@ public class Evaluator {
             }
 
             if (LAMBDA.equals(head)) {
-                return new Closure((ArrayList<Symbol>) list.get(1), list.get(2), environment, this);
+                if (list.size() < 2) {
+                    throw new SyntaxErrorException("The first argument (parameter names) of 'lambda' special form is missing");
+                }
+
+                if (list.size() < 3) {
+                    throw new SyntaxErrorException("The second argument (body) of 'lambda' special form is missing");
+                }
+
+                if (!(list.get(1) instanceof ArrayList)) {
+                    throw new SyntaxErrorException("The first argument of 'lambda' special form is not a list of parameter names");
+                }
+
+                ArrayList<Symbol> parameters = (ArrayList<Symbol>) list.get(1);
+                for (Object parameter: parameters) {
+                    if (!(parameter instanceof Symbol)) {
+                        throw new SyntaxErrorException("The parameter of 'lambda' special form is not a Symbol");
+                    }
+                }
+
+                return new Closure(parameters, list.get(2), environment, this);
             }
 
             if (QUOTE.equals(head)) {

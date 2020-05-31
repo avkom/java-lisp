@@ -95,6 +95,26 @@ public class AppTest extends TestCase {
         assertReadEvaluatePrint("((lambda (a b) (+ a b)) 1.0 2.0)", "3.0");
     }
 
+    public void testLambdaWhenParameterNamesArgumentMissing() {
+        assertReadEvaluatePrintThrows("(lambda)", SyntaxErrorException.class,
+                "The first argument (parameter names) of 'lambda' special form is missing");
+    }
+
+    public void testLambdaWhenBodyArgumentMissing() {
+        assertReadEvaluatePrintThrows("(lambda (a b))", SyntaxErrorException.class,
+                "The second argument (body) of 'lambda' special form is missing");
+    }
+
+    public void testLambdaWhenFirstArgumentIsNotList() {
+        assertReadEvaluatePrintThrows("(lambda 123 456)", SyntaxErrorException.class,
+                "The first argument of 'lambda' special form is not a list of parameter names");
+    }
+
+    public void testLambdaWhenParameterNameIsNotSymbol() {
+        assertReadEvaluatePrintThrows("(lambda (1) 2)", SyntaxErrorException.class,
+                "The parameter of 'lambda' special form is not a Symbol");
+    }
+
     public void testQuote() {
         assertReadEvaluatePrint("(quote (a 1))", "(a 1)");
     }
