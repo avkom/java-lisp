@@ -3,8 +3,8 @@ package com.github.avkomq.lisp;
 import java.util.Iterator;
 
 public class Enumerator<T> {
-    Iterator<T> iterator;
-    T current;
+    private final Iterator<T> iterator;
+    private T current;
 
     public Enumerator(Iterable<T> iterable) {
         iterator = iterable.iterator();

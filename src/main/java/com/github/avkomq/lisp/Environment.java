@@ -3,9 +3,8 @@ package com.github.avkomq.lisp;
 import java.util.HashMap;
 
 public class Environment {
-    private Environment outer;
-
-    private HashMap<Symbol, Object> map = new HashMap<>();
+    private final Environment outer;
+    private final HashMap<Symbol, Object> map = new HashMap<>();
 
     public Environment(Environment outer) {
         this.outer = outer;

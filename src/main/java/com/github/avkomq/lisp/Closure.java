@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public class Closure implements Lambda {
     private final static Symbol VARIADIC = new Symbol(".");
 
-    private ArrayList<Symbol> parameters;
-    private Object body;
-    private Environment environment;
-    private Evaluator evaluator;
+    private final ArrayList<Symbol> parameters;
+    private final Object body;
+    private final Environment environment;
+    private final Evaluator evaluator;
 
     public Closure(ArrayList<Symbol> parameters, Object body, Environment environment, Evaluator evaluator) {
         this.parameters = parameters;
